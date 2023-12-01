@@ -5654,7 +5654,7 @@ react-native-md5@^1.0.0:
 
 react-native-mmkv-storage@^0.9.1:
   version "0.9.1"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.9.1.tgz#0db7e8c1726713dce68704bb8795dc64096c8cbb"
+  resolved "https://registry.npmjs.org/react-native-mmkv-storage/-/react-native-mmkv-storage-0.9.1.tgz"
   integrity sha512-FzSx4PKxK2ocT/OuKGlaVziWZyQYHYLUx9595i1oXY263C5mG19PN5RiBgEGL2S5lK4VGUCzO85GAcsrNPtpOg==
 
 react-native-mmkv@^2.11.0:
@@ -5686,7 +5686,7 @@ react-native-screens@^3.27.0:
 
 react-native-track-player@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-4.0.1.tgz#df80c27290db610f92dc73d89ecae8e354acb28d"
+  resolved "https://registry.npmjs.org/react-native-track-player/-/react-native-track-player-4.0.1.tgz"
   integrity sha512-DpqKL4TQS0kGlHwEtmMrL++mdgWb+uc75eQiP3vfYSlgvAJjbXbkL9h+cofndSuq4TTCp8jclAK+hZKqtMw6+A==
 
 react-native-vector-icons@^10.0.2:

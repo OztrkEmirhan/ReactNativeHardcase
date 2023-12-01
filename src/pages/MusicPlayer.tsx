@@ -1,103 +1,118 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Card, Title, Paragraph, Button} from 'react-native-paper';
-import TrackPlayer, {Track} from 'react-native-track-player';
+import React, {useEffect, useState} from 'react';
+import TrackPlayer, {useTrackPlayerEvents} from 'react-native-track-player';
+import {StyleSheet} from 'react-native';
+import {Card, Title, Paragraph, Button, Text} from 'react-native-paper';
 
-const MusicPlayerScreen = () => {
-  const [playingState, setPlayingState] = useState<{[key: string]: boolean}>(
-    {},
-  );
-  const navigation = useNavigation();
+const tracks = [
+  {
+    id: '0',
+    url: require('../tracks/blues.wav'),
+    title: 'Blues',
+    artist: 'Music Bassted',
+  },
+  {
+    id: '1',
+    url: require('../tracks/country.mp3'),
+    title: 'Aşk Kitabı',
+    artist: 'Hayko Cepkin',
+  },
+  {
+    id: '2',
+    url: require('../tracks/ölüyorum.mp3'),
+    title: 'Ölüyorum',
+    artist: 'Hayko Cepkin',
+  },
+  {
+    id: '3',
+    url: require('../tracks/merhametinedön.mp3'),
+    title: 'Merhametine Dön',
+    artist: 'Sagopa Kajmer',
+  },
+  {
+    id: '4',
+    url: require('../tracks/ykalsın.mp3'),
+    title: 'Yanlız Kalsın',
+    artist: 'Hayko Cepkin',
+  },
+  {
+    id: '5',
+    url: require('../tracks/farkettim.mp3'),
+    title: 'Fark Ettim',
+    artist: 'Semicenk',
+  },
+];
 
-  const musicData: Track[] = [
-    {
-      id: '1',
-      url: 'https://youtu.be/u1c-9y9bqyw?si=1ufx_BtnEtoJyzt6',
-      title: 'Seviyorsan İnanıyorsan',
-      artist: 'Duman',
-    },
-    {
-      id: '1',
-      url: 'https://youtu.be/u1c-9y9bqyw?si=1ufx_BtnEtoJyzt6',
-      title: 'Öyle Dertli',
-      artist: 'Duman',
-    },
-  ];
+const MusicPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
-  useEffect(() => {
-    setupTrackPlayer();
-  }, []);
-
-  const setupTrackPlayer = async () => {
-    await TrackPlayer.setupPlayer();
-    await TrackPlayer.add(musicData);
-  };
-
-  const playOrPauseMusic = async (musicId: string) => {
-    const isCurrentlyPlaying = playingState[musicId] || false;
-
-    if (isCurrentlyPlaying) {
-      await TrackPlayer.stop();
-      console.log(`Müzik durduruldu: ${musicId}`);
+  const playPauseToggle = async () => {
+    if (isPlaying) {
+      await TrackPlayer.pause();
     } else {
       await TrackPlayer.play();
-      console.log(`Müzik başlatıldı: ${musicId}`);
     }
-
-    setPlayingState({
-      ...playingState,
-      [musicId]: !isCurrentlyPlaying,
-    });
+    setIsPlaying(!isPlaying);
   };
 
-  const handleLogout = () => {
-    // Handle logout logic here
-    // For example, you can navigate to the login screen
-    navigation.navigate('Login');
+  const skipToPrevious = async () => {
+    await TrackPlayer.skipToPrevious();
   };
+
+  const skipToNext = async () => {
+    await TrackPlayer.skipToNext();
+  };
+
+  const setUpTrackPlayer = async () => {
+    try {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.add(tracks);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    setUpTrackPlayer();
+  }, []);
+
+  // Şarkı değişikliği dinleme
+  useTrackPlayerEvents(['playback-track-changed'], async event => {
+    const {nextTrack} = event;
+    if (nextTrack !== null) {
+      setCurrentTrackIndex(parseInt(nextTrack));
+    }
+  });
 
   return (
-    <View style={styles.container}>
-      {musicData.map(music => (
-        <Card key={music.id} style={styles.card}>
-          <Card.Content>
-            <Title>{music.title}</Title>
-            <Paragraph>{music.artist}</Paragraph>
-          </Card.Content>
-          <Card.Actions>
-            <Button onPress={() => playOrPauseMusic(music.id)}>
-              {playingState[music.id] ? 'Durdur' : 'Başlat'}
-            </Button>
-          </Card.Actions>
-        </Card>
-      ))}
-      {/* Exit Button */}
-      <View style={styles.exitButtonContainer}>
-        <Button
-          icon="exit-to-app" // You can replace this with your preferred exit icon
-          mode="contained"
-          onPress={handleLogout}>
-          Çıkış
+    <Card style={styles.card}>
+      <Card.Content>
+        <Title>{tracks[currentTrackIndex].artist}</Title>
+        <Paragraph>{tracks[currentTrackIndex].title}</Paragraph>
+      </Card.Content>
+      <Card.Actions style={styles.controls}>
+        <Button onPress={skipToPrevious}>
+          <Text>Geri</Text>
         </Button>
-      </View>
-    </View>
+        <Button onPress={playPauseToggle}>
+          {isPlaying ? <Text>Duraklat</Text> : <Text>Başlat</Text>}
+        </Button>
+        <Button onPress={skipToNext}>
+          <Text>İleri</Text>
+        </Button>
+      </Card.Actions>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
   card: {
-    marginBottom: 16,
+    margin: 16,
+    borderRadius: 10,
   },
-  exitButtonContainer: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
+  controls: {
+    justifyContent: 'space-around',
   },
 });
 
-export default MusicPlayerScreen;
+export default MusicPlayer;
