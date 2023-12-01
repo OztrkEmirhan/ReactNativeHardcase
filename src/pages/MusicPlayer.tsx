@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import TrackPlayer, {useTrackPlayerEvents} from 'react-native-track-player';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Card, Title, Paragraph, Button, Text} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 const tracks = [
   {
@@ -45,6 +46,7 @@ const tracks = [
 const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const navigation = useNavigation();
 
   const playPauseToggle = async () => {
     if (isPlaying) {
@@ -84,34 +86,60 @@ const MusicPlayer = () => {
     }
   });
 
+  const handleLogout = () => {
+    // Handle logout logic here
+    // For example, you can navigate to the login screen
+    navigation.navigate('Login');
+  };
+
   return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <Title>{tracks[currentTrackIndex].artist}</Title>
-        <Paragraph>{tracks[currentTrackIndex].title}</Paragraph>
-      </Card.Content>
-      <Card.Actions style={styles.controls}>
-        <Button onPress={skipToPrevious}>
-          <Text>Geri</Text>
+    <View style={styles.container}>
+      <Card style={styles.card}>
+        {/* Kart içeriği */}
+        <Card.Content>
+          <Title>{tracks[currentTrackIndex].artist}</Title>
+          <Paragraph>{tracks[currentTrackIndex].title}</Paragraph>
+        </Card.Content>
+        <Card.Actions style={styles.controls}>
+          <Button onPress={skipToPrevious}>
+            <Text>Geri</Text>
+          </Button>
+          <Button onPress={playPauseToggle}>
+            {isPlaying ? <Text>Duraklat</Text> : <Text>Başlat</Text>}
+          </Button>
+          <Button onPress={skipToNext}>
+            <Text>İleri</Text>
+          </Button>
+        </Card.Actions>
+      </Card>
+
+      {/* Çıkış butonu */}
+      <View style={styles.exitButtonContainer}>
+        <Button icon="exit-to-app" mode="contained" onPress={handleLogout}>
+          Çıkış
         </Button>
-        <Button onPress={playPauseToggle}>
-          {isPlaying ? <Text>Duraklat</Text> : <Text>Başlat</Text>}
-        </Button>
-        <Button onPress={skipToNext}>
-          <Text>İleri</Text>
-        </Button>
-      </Card.Actions>
-    </Card>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
   card: {
     margin: 16,
     borderRadius: 10,
+    position: 'relative',
   },
   controls: {
     justifyContent: 'space-around',
+  },
+  exitButtonContainer: {
+    position: 'absolute',
+    bottom: 36,
+    left: 36,
   },
 });
 
