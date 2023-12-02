@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import TrackPlayer, {useTrackPlayerEvents} from 'react-native-track-player';
-import {StyleSheet, View} from 'react-native';
-import {Card, Title, Paragraph, Button, Text} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Card, Paragraph, Title } from 'react-native-paper';
+import TrackPlayer, { useTrackPlayerEvents } from 'react-native-track-player';
+import PlayerControls from '../components/PlayerControls';
 
 const tracks = [
   {
@@ -100,17 +101,12 @@ const MusicPlayer = () => {
           <Title>{tracks[currentTrackIndex].artist}</Title>
           <Paragraph>{tracks[currentTrackIndex].title}</Paragraph>
         </Card.Content>
-        <Card.Actions style={styles.controls}>
-          <Button onPress={skipToPrevious}>
-            <Text>Geri</Text>
-          </Button>
-          <Button onPress={playPauseToggle}>
-            {isPlaying ? <Text>Duraklat</Text> : <Text>Başlat</Text>}
-          </Button>
-          <Button onPress={skipToNext}>
-            <Text>İleri</Text>
-          </Button>
-        </Card.Actions>
+        <PlayerControls
+          isPlaying={isPlaying}
+          onPlayPauseToggle={playPauseToggle}
+          onSkipToPrevious={skipToPrevious}
+          onSkipToNext={skipToNext}
+        />
       </Card>
 
       {/* Çıkış butonu */}
