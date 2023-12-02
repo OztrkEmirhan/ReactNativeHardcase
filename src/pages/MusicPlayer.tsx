@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -81,15 +82,16 @@ const MusicPlayer = () => {
 
   // Şarkı değişikliği dinleme
   useTrackPlayerEvents(['playback-track-changed'], async event => {
-    const {nextTrack} = event;
+    const { nextTrack } = event;
     if (nextTrack !== null) {
       setCurrentTrackIndex(parseInt(nextTrack));
     }
   });
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Handle logout logic here
     // For example, you can navigate to the login screen
+    await TrackPlayer.pause();
     navigation.navigate('Login');
   };
 

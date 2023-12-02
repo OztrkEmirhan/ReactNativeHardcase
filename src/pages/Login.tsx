@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TextInput, Button, Snackbar} from 'react-native-paper';
+/* eslint-disable prettier/prettier */
+import { useNavigation } from '@react-navigation/native';
 import md5 from 'md5';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Snackbar, TextInput } from 'react-native-paper';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');

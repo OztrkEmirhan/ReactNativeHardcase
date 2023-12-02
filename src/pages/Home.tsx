@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MMKVStorage from 'react-native-mmkv-storage';
