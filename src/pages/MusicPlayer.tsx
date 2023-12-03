@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import TrackPlayer, { useTrackPlayerEvents } from 'react-native-track-player';
+import AppStates from '../components/AppState';
 import PlayerControls from '../components/PlayerControls';
 
 const tracks = [
@@ -110,7 +111,7 @@ const MusicPlayer = () => {
           onSkipToNext={skipToNext}
         />
       </Card>
-
+      <AppStates />
       {/* Çıkış butonu */}
       <View style={styles.exitButtonContainer}>
         <Button icon="exit-to-app" mode="contained" onPress={handleLogout}>
