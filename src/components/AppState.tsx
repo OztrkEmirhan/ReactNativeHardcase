@@ -26,7 +26,8 @@ const AppStates = () => {
     });
 
     BackgroundService.on("expiration", () => {
-      
+      console.log("Expiration");
+      setCounter(0);
     });
 
     return () => {

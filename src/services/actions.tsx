@@ -1,17 +1,36 @@
 import BackgroundService from 'react-native-background-actions';
 
+class TaskCounter {
+  private counter: number;
+
+  constructor() {
+    this.counter = 0;
+  }
+
+  setCounter = (counter: number) => {
+    this.counter = counter;
+  };
+
+  getCounter = () => {
+    return this.counter;
+  };
+}
+
+export const taskCounter = new TaskCounter();
+
 const sleep = (time: any) =>
   new Promise<void>(resolve => setTimeout(() => resolve(), time));
 
 export const veryIntensiveTask = async (taskDataArguments: any) => {
   const {delay} = taskDataArguments;
   for (let i = 0; BackgroundService.isRunning(); i++) {
-    // console.log(i);
+    taskCounter.setCounter(taskCounter.getCounter() + 1000);
     await sleep(delay);
   }
 };
 
 export const startBackgroundService = async () => {
+  taskCounter.setCounter(0);
   const options = {
     taskName: 'Example',
     taskTitle: 'ExampleTask title',
@@ -32,4 +51,5 @@ export const startBackgroundService = async () => {
 
 export const stopBackgroundService = async () => {
   await BackgroundService.stop();
+  return taskCounter.getCounter();
 };
