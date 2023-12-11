@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { useNavigation } from '@react-navigation/native';
-import md5 from 'md5';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Snackbar, TextInput } from 'react-native-paper';
+import { useAuth } from '../context/auth';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -11,17 +11,16 @@ const LoginScreen = () => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const navigation = useNavigation();
+  const { login } = useAuth();
 
   const handleLogin = () => {
     // Kullanıcı bilgileri.
     const storedEmail = 'Emirhan@gmail.com';
     const storedPassword = 'Emirhan123';
 
-    const storedPasswordHash = md5(storedPassword); // Şifrenin hash'i
-    const inputPasswordHash = md5(password);
-
-    if (email === storedEmail && inputPasswordHash === storedPasswordHash) {
+    if (email === storedEmail && password === storedPassword) {
       // Giriş başarılı.
+      login({email: storedEmail}); // Kullanıcı bilgilerini saklamak için login fonksiyonunu kullanın
       setSnackbarText('Giriş başarılı');
       setSnackbarVisible(true);
       navigation.navigate('Main');
@@ -37,13 +36,13 @@ const LoginScreen = () => {
       <TextInput
         label="Email"
         value={email}
-        onChangeText={(text: React.SetStateAction<string>) => setEmail(text)}
+        onChangeText={text => setEmail(text)}
         style={styles.input}
       />
       <TextInput
         label="Password"
         value={password}
-        onChangeText={(text: React.SetStateAction<string>) => setPassword(text)}
+        onChangeText={text => setPassword(text)}
         secureTextEntry
         style={styles.input}
       />
