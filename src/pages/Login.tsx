@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Snackbar, TextInput } from 'react-native-paper';
 import { useAuth } from '../context/auth';
 
-const LoginScreen = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default Login;
