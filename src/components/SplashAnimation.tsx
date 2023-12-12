@@ -4,25 +4,31 @@ import LottieView from 'lottie-react-native';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Easing } from 'react-native';
 
+// Lottie animasyonunu sarmak için AnimatedLottieView bileşeni oluşturuluyor
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
+
 export const SplashAnimation = ({ onAnimationComplete }: any) => {
+  // Animasyon ilerleme durumu referansı oluşturuluyor
   const animationProgress = useRef(new Animated.Value(0));
 
   useEffect(() => {
+    // Animasyonun oynatılıp oynatılmadığını kontrol eden fonksiyon
     const checkIfAnimationPlayed = async () => {
       try {
+        // Animasyon daha önce oynatılmış mı kontrol ediliyor
         const animationPlayed = await AsyncStorage.getItem('animationPlayed');
         if (!animationPlayed) {
-          startAnimation();
+          startAnimation(); // Daha önce oynatılmamışsa animasyonu başlat
         } else {
-          onAnimationComplete(); // Skip animation and proceed to the next screen
+          onAnimationComplete(); // Animasyonu atla ve bir sonraki ekrana geç
         }
       } catch (error) {
         console.error('Error checking animationPlayed:', error);
       }
     };
 
+    // Animasyonu başlatan fonksiyon
     const startAnimation = () => {
       Animated.timing(animationProgress.current, {
         toValue: 1,
@@ -30,16 +36,17 @@ export const SplashAnimation = ({ onAnimationComplete }: any) => {
         easing: Easing.linear,
         useNativeDriver: true,
       }).start(async () => {
-        // Save a flag indicating that the animation has been played
         await AsyncStorage.setItem('animationPlayed', 'true');
         onAnimationComplete();
       });
     };
 
+    // Animasyonun oynatılıp oynatılmayacağını kontrol et
     checkIfAnimationPlayed();
+
+    // Animasyonu 3 saniye sonra başlatmak için gecikme ekleniyor
     const delay = setTimeout(startAnimation, 3000);
 
-    // Clean up any asynchronous tasks or timers
     return () => clearTimeout(delay);
   }, [onAnimationComplete]);
 
