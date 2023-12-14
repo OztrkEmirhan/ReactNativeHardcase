@@ -12,7 +12,7 @@ const Home = () => {
   const [snackbarText, setSnackbarText] = React.useState('');
 
   const mmkv = new MMKVStorage.Loader().initialize();
-
+  
   useEffect(() => {
     const storedTodos = mmkv.getString('todos');
     if (storedTodos) {

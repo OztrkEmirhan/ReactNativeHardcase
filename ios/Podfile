@@ -27,7 +27,7 @@ end
 
 target 'MyApp' do
   config = use_native_modules!
-
+  pod 'lottie-ios', '~> 4.3.4'
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.

@@ -5,6 +5,8 @@ import React from 'react';
 import { ApiContextProvider } from './src/context/api';
 import Main from './src/navigations/Main';
 import Login from './src/pages/Login';
+import { SafeAreaFrameContext } from 'react-native-safe-area-context';
+import Splash from './src/pages/Splash';
 // import Splash from './src/pages/Splash';
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +22,7 @@ const App = () => {
     <ApiContextProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen options={{headerShown: false}} name="Splash" component={Splash} />
           {/* Giriş Sayfası */}
           <Stack.Screen name="Login" component={Login} />
 
