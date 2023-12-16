@@ -8,21 +8,17 @@ const initialState = {
   showSplash: false,
 };
 
-// SplashProvider component'i
 export const SplashProvider = ({children}: any) => {
   const [state, dispatch] = useReducer(splashReducer, initialState);
 
-  // AsyncStorage kullanarak uygulama durumunu kontrol et
   const checkSplashStatus = async () => {
     try {
       const value = await AsyncStorage.getItem('showSplash');
       if (value === 'false') {
         dispatch({type: 'HIDE_SPLASH'});
       } else {
-        // Check if dispatch is defined before using it
         if (dispatch) {
           dispatch({type: 'SHOW_SPLASH'});
-          // İlk açılışta AsyncStorage'i güncelle
           await AsyncStorage.setItem('showSplash', 'false');
         } else {
           console.error('Dispatch function is undefined');
