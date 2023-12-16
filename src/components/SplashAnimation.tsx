@@ -14,20 +14,22 @@ export const SplashAnimation = ({ onAnimationComplete }: any) => {
 
   useEffect(() => {
     // Animasyonun oynatılıp oynatılmadığını kontrol eden fonksiyon
-    const checkIfAnimationPlayed = async () => {
-      try {
-        // Animasyon daha önce oynatılmış mı kontrol ediliyor
-        const animationPlayed = await AsyncStorage.getItem('animationPlayed');
-        if (!animationPlayed) {
-          startAnimation(); // Daha önce oynatılmamışsa animasyonu başlat
-        } else {
-          onAnimationComplete(); // Animasyonu atla ve bir sonraki ekrana geç
-        }
-      } catch (error) {
-        console.error('Error checking animationPlayed:', error);
-      }
-    };
 
+      const checkIfAnimationPlayed = async () => {
+        try {
+          const animationPlayed = await AsyncStorage.getItem('animationPlayed');
+          if (animationPlayed !== null) {
+            // Değer varsa işlemleri devam ettir
+            onAnimationComplete();
+          } else {
+            // Değer yoksa animasyonu başlat
+            startAnimation();
+          }
+        } catch (error) {
+          console.error('Error checking animationPlayed:', error);
+        }
+      };
+    }
     // Animasyonu başlatan fonksiyon
     const startAnimation = () => {
       Animated.timing(animationProgress.current, {

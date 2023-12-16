@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { createContext, useReducer, useState } from 'react';
-import { authReducer } from './authReducer';
+import { authReducer } from './reducer/authReducer';
 
 // ApiContext oluşturuluyor ve başlangıç değeri boş bir nesne olarak atanıyor
 export const ApiContext = createContext({});

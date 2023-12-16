@@ -1,40 +1,42 @@
-/* eslint-disable prettier/prettier */
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// Import edilecek kütüphaneler
 import React from 'react';
-import { ApiContextProvider } from './src/context/api';
-import Main from './src/navigations/Main';
+import {Splash} from './src/pages/Splash';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './src/pages/Login';
-import { SafeAreaFrameContext } from 'react-native-safe-area-context';
-import Splash from './src/pages/Splash';
-// import Splash from './src/pages/Splash';
+import {SplashProvider, useSplashContext} from './src/context/SplashApi';
+import {ApiContextProvider} from './src/context/api';
+import Main from './src/navigations/Main';
 
+// Uygulama içinde kullanım örnek
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // const [state] = useGlobalState();
+  const {showSplash}: any = useSplashContext();
 
-  // if(state.isBooting) {
-  //   return <Splash/>;
-  // }
+  if (showSplash) {
+    return <Splash />;
+  }
 
   return (
-    <ApiContextProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen options={{headerShown: false}} name="Splash" component={Splash} />
-          {/* Giriş Sayfası */}
-          <Stack.Screen name="Login" component={Login} />
+    <SplashProvider>
+      <ApiContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {/* Giriş Sayfası */}
+            <Stack.Screen name="Login" component={Login} />
 
-          {/* Ana Sayfa */}
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Main"
-            component={Main}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ApiContextProvider>
+            {/* Ana Sayfa */}
+            <Stack.Screen
+              options={{headerShown: false}}
+              name="Main"
+              component={Main}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApiContextProvider>
+    </SplashProvider>
   );
 };
+
 export default App;
